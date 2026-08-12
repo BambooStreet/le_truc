@@ -3,11 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  // 배포(Vercel)가 저장소 루트의 dist 에서 산출물을 찾으므로 그리로 출력한다.
-  build: {
-    outDir: '../../dist',
-    emptyOutDir: true,
-  },
+  // 빌드 산출물은 packages/client/dist (기본값). Vercel Output Directory 도 이 경로로 설정.
   server: {
     host: true,
     port: 5173,
