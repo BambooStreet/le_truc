@@ -36,7 +36,8 @@ function send(ws: WebSocket, msg: ServerMessage): void {
 
 // HTTP 서버(헬스체크용) 위에 WebSocket 서버를 얹는다. 플랫폼 헬스체크가 200 을 받도록.
 const httpServer = createServer((req, res) => {
-  if (req.url === '/health' || req.url === '/') {
+  const path = (req.url ?? '/').split('?')[0]; // 쿼리스트링 무시
+  if (path === '/health' || path === '/') {
     res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Le Truc WebSocket 서버 실행 중');
     return;
