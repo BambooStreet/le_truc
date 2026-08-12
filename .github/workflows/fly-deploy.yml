@@ -1,0 +1,31 @@
+name: Fly Deploy
+
+# 서버/공유 코드나 배포 설정이 바뀔 때만 서버를 재배포한다.
+# (클라이언트만 고쳤을 때 서버까지 재배포하는 낭비를 막는다. 클라는 Vercel 이 자동 처리.)
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/server/**'
+      - 'packages/shared/**'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'fly.toml'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/fly-deploy.yml'
+  workflow_dispatch: {} # Actions 탭에서 수동 실행도 허용
+
+jobs:
+  deploy:
+    name: Deploy to Fly.io
+    runs-on: ubuntu-latest
+    concurrency: deploy-group # 동시 배포 방지
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      # 인메모리 상태이므로 --ha=false 로 머신 1개 유지
+      - run: flyctl deploy --remote-only --ha=false
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
