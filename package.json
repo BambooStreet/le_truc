@@ -1,0 +1,15 @@
+{
+  "name": "le-truc",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "npm run test --workspace @le-truc/shared",
+    "dev:server": "npm run dev --workspace @le-truc/server",
+    "dev:client": "npm run dev --workspace @le-truc/client",
+    "build:client": "npm run build --workspace @le-truc/client"
+  }
+}
