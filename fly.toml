@@ -1,25 +1,28 @@
-# Le Truc WebSocket 서버 (Fly.io)
-# app 이름은 전역에서 유일해야 한다. 이미 쓰이면 아래 값을 바꾸거나
-# `fly launch --name <원하는이름>` 으로 지정하면 이 파일이 갱신된다.
-app = "le-truc-server"
-primary_region = "nrt" # 도쿄 (한국에서 가까움)
+# fly.toml app configuration file generated for le-truc-bamboo on 2026-08-13T02:54:48+09:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
+app = 'le-truc-bamboo'
+primary_region = 'nrt'
+
+[build]
 [http_service]
   internal_port = 8080
   force_https = true
-  # 인메모리 상태이므로 머신은 항상 1개만. 유휴 시 정지 → 접속 시 자동 기동(수 초).
-  # 항상 켜두려면 auto_stop_machines = "off", min_machines_running = 1 로 변경.
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
 
   [[http_service.checks]]
-    interval = "30s"
-    timeout = "5s"
-    grace_period = "10s"
-    method = "GET"
-    path = "/health"
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/health'
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "256mb"
+  size = 'shared-cpu-1x'
+  memory = '256mb'
+  cpus = 1
+  memory_mb = 256
